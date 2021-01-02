@@ -1,80 +1,65 @@
-# esp-idf-ssd1306
-SSD1306 driver for esp-idf
+# SSD1306 Driver for ESP-IDF
 
-I used [this](https://github.com/yanbe/ssd1306-esp-idf-i2c) repository as a reference.   
-I used [this](https://github.com/dhepper/font8x8) font file.   
+This is based on the code from [nopnop2002's SSD1306 library](https://github.com/nopnop2002/esp-idf-ssd1306). There are lots of libraries out there and Espressif has a sample in their ESP IOT library. The Espressif one however drags in lot of other code that I had no use for, and other libraries only supported the I2C one. This version works, but was setup as a sample project. I moved the files around so it can be included as a component to any ESP-IDF project. This version also supported the ESP32-S2 chip out of the box.
 
-# Installation for ESP32
+Apparently, code was based on:
+* [repository as a reference](https://github.com/yanbe/ssd1306-esp-idf-i2c)   
+* [font file](https://github.com/dhepper/font8x8)  
+
+## Installation for IDF project
+
+Checkout the code as a submodule:
 
 ```
-git clone https://github.com/nopnop2002/esp-idf-ssd1306
-cd esp-idf-ssd1306/
-idf.py set-target esp32
+mkdir components
+git submodule add https://github.com/mbuckaway/esp-idf-ssd1306
 idf.py menuconfig
-idf.py flash
+idf.py build
+idf.py build
 ```
 
-# Installation for ESP32-S2
+For the ESP32-S2 chip, the process is the same, except, you have to set the target first. This is nothing special about this code for the S2 chip, however.
 
-```
-git clone https://github.com/nopnop2002/esp-idf-ssd1306
-cd esp-idf-ssd1306/
-idf.py set-target esp32s2
-idf.py menuconfig
-idf.py flash
-```
+## Config Variables
 
-You have to set this config value with menuconfig.   
-- CONFIG_INTERFACE   
-- CONFIG_PANEL   
-- CONFIG_SDA_GPIO   
-- CONFIG_SCL_GPIO   
-- CONFIG_RESET_GPIO   
-- CONFIG_MOSI_GPIO   
+You have to set this config value with menuconfig.
+- CONFIG_INTERFACE
+- CONFIG_PANEL
+- CONFIG_SDA_GPIO
+- CONFIG_SCL_GPIO
+- CONFIG_RESET_GPIO
+- CONFIG_MOSI_GPIO
 - CONFIG_SCLK_GPIO   
-- CONFIG_CS_GPIO   
-- CONFIG_DC_GPIO   
+- CONFIG_CS_GPIO
+- CONFIG_DC_GPIO
 
 
-![config-main](https://user-images.githubusercontent.com/6020549/101276030-7387f980-37ed-11eb-85af-3babe939f0a1.jpg)
+![config-main](images/config.png)
 
----
+See the original repo is you want to see sample images for projects based on the driver.
 
-# Generic 128x32 i2c
+## Building the example
 
-![128x32](https://user-images.githubusercontent.com/6020549/56449097-6d12e880-6350-11e9-8edd-7a8fc5eaeedc.JPG)
-![config-128x32_i2c](https://user-images.githubusercontent.com/6020549/101276039-85699c80-37ed-11eb-8cc5-07426c60e7de.jpg)
+The code is setup as a componment to be used in your application. To build the example, go into the example directory, and run the following:
 
----
+```
+cd example
+idf.py menuconfig
+idf.py build
+idy.py flash
+```
 
-# Generic 128x64 i2c
+The example will build and be flashed into your device. The example was changed from the original to loop forever and provide logging on the serial console. Useful if you happen to incorrectly setup the GPIO pins.
 
-![128x64](https://user-images.githubusercontent.com/6020549/56449101-7dc35e80-6350-11e9-8579-32fff38369c0.JPG)
-![config-128x64_i2c](https://user-images.githubusercontent.com/6020549/101276050-961a1280-37ed-11eb-8b85-b8e1de585832.jpg)
+The example is show running in the photo below.
 
----
-
-# 128x64 TTGO
-
-![ESP32-TTGO-1](https://user-images.githubusercontent.com/6020549/56449111-9764a600-6350-11e9-9902-e2ad1c4aefb0.JPG)
-![ESP32-TTGO-2](https://user-images.githubusercontent.com/6020549/56449116-9a5f9680-6350-11e9-86ec-e06648118add.JPG)
-![128x64_Reset](https://user-images.githubusercontent.com/6020549/56449118-9e8bb400-6350-11e9-9b90-1eb1f9fa8e99.JPG)
-![config-128x64_TTGO](https://user-images.githubusercontent.com/6020549/101276064-b8139500-37ed-11eb-8e10-59447903cb80.jpg)
-
----
-
-# 128x64 ESP-WROOM-32
-
-![ESP32-OLED-2](https://user-images.githubusercontent.com/6020549/57063327-d229ef00-6cfd-11e9-98ab-8448e14d81e2.JPG)
-![config-ESP-WROOM-32](https://user-images.githubusercontent.com/6020549/101276069-c5c91a80-37ed-11eb-98bf-c32207d3346f.jpg)
-
----
-
-# Generic 128x64 SPI
-D0 is SCLK.    
-D1 is MOSI.    
-
-![128x64_spi](https://user-images.githubusercontent.com/6020549/56844607-ee88ee80-68ed-11e9-9b20-ab5e7e0d2a99.JPG)
-![config-128x64_spi](https://user-images.githubusercontent.com/6020549/101276076-cd88bf00-37ed-11eb-9183-c8b9f4ee4974.jpg)
+![example-running](images/sample.jpg)
 
 
+## Fonts
+
+The basic 8x8 font is provided. The source of the font is from [Daniel Hepper's font8x8 repo](https://github.com/dhepper/font8x8). Other extended fonts are available for such things as European characters, box display, etc. Read font8x8_basic.h for details on how to transport the original font files to use with the SSD1306.
+
+## Usage
+
+The best way to figure out how to use component is to refer to example and the ssd1306.h. The API is straight forward.

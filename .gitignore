@@ -1,0 +1,6 @@
+build/
+sdkconfig*
+*.log
+*.txt
+example/sdkconfig*
+example/build/
