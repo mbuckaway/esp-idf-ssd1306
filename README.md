@@ -1,10 +1,27 @@
 # SSD1306 Driver for ESP-IDF
 
-This is based on the code from [nopnop2002's SSD1306 library](https://github.com/nopnop2002/esp-idf-ssd1306). There are lots of libraries out there and Espressif has a sample in their ESP IOT library. The Espressif one however drags in lot of other code that I had no use for, and other libraries only supported the I2C one. This version works, but was setup as a sample project. I moved the files around so it can be included as a component to any ESP-IDF project. This version also supported the ESP32-S2 chip out of the box.
+This is a simple SSD1306 OLED display library based on the code from [nopnop2002's SSD1306 library](https://github.com/nopnop2002/esp-idf-ssd1306). There are lots of libraries available for this simple display, but all I wanted was to display text on the screen on a device as it boots up. I wanted something simple to display status information. This library does that.
 
-Apparently, code was based on:
-* [repository as a reference](https://github.com/yanbe/ssd1306-esp-idf-i2c)   
-* [font file](https://github.com/dhepper/font8x8)  
+This library supports:
+
+- component for the ESP-IDF (just add to your project as a git submodule)
+- I2C and SPI OLED displays 128x32 or 128x64. SPI displays are assumed to be 128x64.
+- Using the included 8x8 font, it will display 4 lines of 16 chars on 128x32 displays, and 8 lines of 16 chars on 128x64 display
+- Display images on the display
+- Scrolling text based on a defined region (ie. a title line with 3 line of scrolling text)
+- Hardware scrolling
+- Clear, invert, and other misc functions
+
+What it does not do:
+
+- support anything other than the 8x8 font out of the box. It could/should be updated to use newer font formats that define the char size in the font data, however, it does what I need it to do.
+
+The code has been updated from the original to clean up some of the methods, fix the example code, and "hide" the i2c and spi methods the user really shouldn't call directly. All user methods are documented in ssd1306.h.
+
+The code was based on:
+* [nopnop2002's SSD1306 library](https://github.com/nopnop2002/esp-idf-ssd1306)
+* [yanbe's SDD1306 library](https://github.com/yanbe/ssd1306-esp-idf-i2c)   
+* [8x8 font file from D. Hepper](https://github.com/dhepper/font8x8)  
 
 ## Installation for IDF project
 

@@ -7,13 +7,14 @@
 #include <driver/gpio.h>
 #include "esp_log.h"
 
+#include "driver/spi_master.h"
+
+#include "oled_cmds.h"
+#include "ssd1306_spi.h"
 #include "ssd1306.h"
 #include "font8x8_basic.h"
 
-#define tag "SSD1306"
-
-//static const int GPIO_MOSI = 23;
-//static const int GPIO_SCLK = 18;
+static const char *tag = "SDD1306_SPI";
 
 #ifdef CONFIG_IDF_TARGET_ESP32
 #define LCD_HOST    HSPI_HOST
@@ -21,6 +22,8 @@
 #elif defined CONFIG_IDF_TARGET_ESP32S2
 #define LCD_HOST    SPI2_HOST
 #define DMA_CHAN    LCD_HOST
+#else
+#error "Unknown ESP32 chip. Update ssd1306_spi.c."
 #endif
 
 static const int SPI_Command_Mode = 0;
@@ -105,7 +108,7 @@ bool spi_master_write_data(SSD1306_t * dev, const uint8_t* Data, size_t DataLeng
 
 void spi_init(SSD1306_t * dev, int width, int height)
 {
-	dev->_address = SPIAddress;
+	dev->_address = SPI_Address;
 	dev->_width = width;
 	dev->_height = height;
 	dev->_pages = 8;

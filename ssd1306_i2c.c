@@ -6,10 +6,12 @@
 #include "driver/i2c.h"
 #include "esp_log.h"
 
+#include "oled_cmds.h"
+#include "ssd1306_i2c.h"
 #include "ssd1306.h"
 #include "font8x8_basic.h"
 
-#define tag "SSD1306"
+static const char *tag = "SDD1306_I2C";
 
 void i2c_master_init(int16_t sda, int16_t scl, int16_t reset)
 {
@@ -250,4 +252,3 @@ void i2c_hardware_scroll(SSD1306_t * dev, ssd1306_scroll_type_t scroll) {
 
 	i2c_cmd_link_delete(cmd);
 }
-
